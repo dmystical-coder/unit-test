@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity 0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
 import {W3CXII} from "../src/W3CXII.sol";
@@ -242,10 +242,6 @@ contract W3CXIITest is Test {
         // Verify contract balance is now zero
         assertEq(address(w3cxii).balance, 0);
 
-        // Create a new transaction context to ensure destruction
-        vm.roll(block.number + 1);
-        vm.warp(block.timestamp + 15);
-
         // NOTE: Due to Foundry's implementation, the contract code
         // might still be accessible in tests even after selfdestruct
         // This is a test environment limitation
@@ -332,7 +328,7 @@ contract W3CXIITest is Test {
         // Verify ETH was transferred to the target
         assertEq(address(w3cxii).balance, targetBalance + attackAmount);
 
-        // Create an instance with zero ETH too (for branch coverage)
+        // Create an instance with zero ETH
         vm.prank(user);
         new Attacker{value: 0}(address(w3cxii));
     }
